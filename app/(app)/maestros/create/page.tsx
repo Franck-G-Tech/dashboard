@@ -36,7 +36,7 @@ export default function NuevoMaestroPage() {
 
     try {
       await createMutation(formData);
-      router.push("/"); // Redirige a la página principal tras la creación exitosa
+      router.push("/maestros"); // Redirige a la página principal tras la creación exitosa
     } catch (err) {
       setError("Ocurrió un error al crear el Maestro: " + err);
     } finally {
@@ -45,7 +45,7 @@ export default function NuevoMaestroPage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/maestros"); // Redirige a la página principal al cancelar
   };
 
   return (

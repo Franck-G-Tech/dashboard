@@ -63,7 +63,7 @@ export default function EditarEstudiantePage() {
           id: estudiante._id,
           ...formData
         });
-      router.push("/"); // Redirige a la página principal tras la edición exitosa
+      router.push("/estudiantes"); // Redirige a la página principal tras la edición exitosa
     } catch (err) {
       setError("Ocurrió un error al actualizar el estudiante: " + err);
     } finally {
@@ -72,7 +72,7 @@ export default function EditarEstudiantePage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/estudiantes"); // Redirige a la página principal al cancelar
   };
 
   return (

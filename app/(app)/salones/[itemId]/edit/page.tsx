@@ -62,7 +62,7 @@ export default function EditarSalonPage() {
         id: salon._id,
         ...formData,
       });
-      router.push("/"); // Redirige a la página principal tras la edición exitosa
+      router.push("/salones"); 
     } catch (err) {
       setError("Ocurrió un error al actualizar el salon: " + err);
     } finally {
@@ -71,7 +71,7 @@ export default function EditarSalonPage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/salones"); 
   };
 
   return (

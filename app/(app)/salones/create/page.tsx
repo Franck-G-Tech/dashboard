@@ -36,7 +36,7 @@ export default function NuevoSalonPage() {
 
     try {
       await createMutation(formData);
-      router.push("/"); // Redirige a la página principal tras la creación exitosa
+      router.push("/salones"); 
     } catch (err) {
       setError("Ocurrió un error al crear el Salon: " + err);
     } finally {
@@ -45,7 +45,7 @@ export default function NuevoSalonPage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/salones");
   };
 
   return (

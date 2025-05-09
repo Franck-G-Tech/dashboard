@@ -62,7 +62,7 @@ export default function EditarMaestroPage() {
         id: maestro._id,
         ...formData,
       });
-      router.push("/"); // Redirige a la página principal tras la edición exitosa
+      router.push("/maestros"); 
     } catch (err) {
       setError("Ocurrió un error al actualizar el maestro: " + err);
     } finally {
@@ -71,7 +71,7 @@ export default function EditarMaestroPage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/maestros");
   };
 
   return (

@@ -32,7 +32,7 @@ export default function NuevoHorarioPage() {
 
     try {
       await createMutation(formData);
-      router.push("/"); // Redirige a la página principal tras la creación exitosa
+      router.push("/horarios"); // Redirige a la página principal tras la creación exitosa
     } catch (err) {
       setError("Ocurrió un error al crear el Horario: " + err);
     } finally {
@@ -41,7 +41,7 @@ export default function NuevoHorarioPage() {
   };
 
   const handleCancel = () => {
-    router.push("/"); // Redirige a la página principal al cancelar
+    router.push("/horarios"); // Redirige a la página principal al cancelar
   };
 
   return (
