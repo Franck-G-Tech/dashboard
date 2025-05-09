@@ -2,16 +2,13 @@
 
 import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  Command,
+  Book,
   Frame,
   LifeBuoy,
   Map,
   PieChart,
   Send,
   Settings2,
-  SquareTerminal,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -38,7 +35,7 @@ const data = {
     {
       title: "Maestros",
       url: "/maestros",
-      icon: SquareTerminal,
+      icon: Book,
       items: [
         {
           title: "Ver",
@@ -53,7 +50,7 @@ const data = {
     {
       title: "Estudiantes",
       url: "/estudiantes",
-      icon: SquareTerminal,
+      icon: Book,
 
       items: [
         {
@@ -69,7 +66,7 @@ const data = {
     {
       title: "Horarios",
       url: "/horarios",
-      icon: SquareTerminal,
+      icon: Book,
 
       items: [
         {
@@ -85,7 +82,7 @@ const data = {
     {
       title: "Salones",
       url: "#",
-      icon: SquareTerminal,
+      icon: Book,
 
       items: [
         {
@@ -101,7 +98,7 @@ const data = {
     {
       title: "Materias",
       url: "/materias",
-      icon: SquareTerminal,
+      icon: Book,
       items: [
         {
           title: "Ver",
