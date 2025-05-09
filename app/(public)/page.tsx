@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@/components/ui/button'; // Asegúrate de tener estos componentes de Shadcn UI
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+//import { Button } from '@/components/ui/button'; // Asegúrate de tener estos componentes de Shadcn UI
+//import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 
 const HomePage = () => {
