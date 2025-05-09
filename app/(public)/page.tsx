@@ -5,13 +5,13 @@ import React from 'react';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4 md:p-8">
+    <div className="flex min-h-[calc(70vh-5rem)] flex-col items-center justify-center">
       
         <div className="text-center space-y-4">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
             Bienvenido a School App
           </h1>
-          <p className="text-gray-300 text-base sm:text-lg md:text-xl">
+          <p className=" text-base sm:text-lg md:text-xl">
             Tu solución centralizada para la gestión y visualización de datos.
           </p>
         </div>

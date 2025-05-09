@@ -33,21 +33,6 @@ const data = {
   },
   navMain: [
     {
-      title: "Maestros",
-      url: "/maestros",
-      icon: Book,
-      items: [
-        {
-          title: "Ver",
-          url: "maestros/",
-        },
-        {
-          title: "Crear",
-          url: "maestros/create",
-        },
-      ],
-    },
-    {
       title: "Estudiantes",
       url: "/estudiantes",
       icon: Book,
@@ -80,18 +65,17 @@ const data = {
       ],
     },
     {
-      title: "Salones",
-      url: "#",
+      title: "Maestros",
+      url: "/maestros",
       icon: Book,
-
       items: [
         {
           title: "Ver",
-          url: "salones/",
+          url: "maestros/",
         },
         {
           title: "Crear",
-          url: "salones/create",
+          url: "maestros/create",
         },
       ],
     },
@@ -111,28 +95,44 @@ const data = {
       ],
     },
     {
-      title: "Settings",
+      title: "Salones",
       url: "#",
-      icon: Settings2,
+      icon: Book,
+
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Ver",
+          url: "salones/",
         },
         {
-          title: "Team",
-          url: "",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Crear",
+          url: "salones/create",
         },
       ],
     },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
   navSecondary: [
     {
@@ -173,9 +173,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     >
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarFooter>
-            <NavUser user={data.user} />
-          </SidebarFooter>
           {/*<SidebarMenuItem>
              <SidebarMenuButton size="lg" asChild>
               <a href="#">
@@ -196,6 +193,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }

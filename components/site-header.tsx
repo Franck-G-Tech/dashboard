@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import { SidebarIcon } from "lucide-react";
 import { ThemeToggle } from "./theme/theme-toggle";
 import { SearchForm } from "@/components/search-form";
@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
-import useBreadcrumb from '@/hooks/use-breadcrumb';
+import useBreadcrumb from "@/hooks/use-breadcrumb";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -35,29 +35,35 @@ export function SiteHeader() {
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb className="hidden sm:block">
           <BreadcrumbList>
-            {Array.isArray(breadcrumbPath) && breadcrumbPath.map((item, index) => (
-              <React.Fragment key={index}>
-                {index < breadcrumbPath.length - 1 ? (
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href={`/${breadcrumbPath.slice(1, index + 1).map(i => i.slug).join('/')}`}>
-                      {item.label}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                ) : (
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                  </BreadcrumbItem>
-                )}
-                {index < breadcrumbPath.length - 1 && <BreadcrumbSeparator />}
-              </React.Fragment>
-            ))}
+            {Array.isArray(breadcrumbPath) &&
+              breadcrumbPath.map((item, index) => (
+                <React.Fragment key={index}>
+                  {index < breadcrumbPath.length - 1 ? (
+                    <BreadcrumbItem>
+                      <BreadcrumbLink
+                        href={`/${breadcrumbPath
+                          .slice(1, index + 1)
+                          .map((i) => i.slug)
+                          .join("/")}`}
+                      >
+                        {item.label}
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                  ) : (
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  )}
+                  {index < breadcrumbPath.length - 1 && <BreadcrumbSeparator />}
+                </React.Fragment>
+              ))}
           </BreadcrumbList>
         </Breadcrumb>
 
-        
-          <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
+        <div className="justify-end flex-1 sm:flex ">
           <ThemeToggle />
-        
+        </div>
       </div>
     </header>
   );
