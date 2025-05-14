@@ -97,7 +97,7 @@ const data = {
     },
     {
       title: "Salones",
-      url: "#",
+      url: "/salones/",
       icon: Book,
 
       items: [
