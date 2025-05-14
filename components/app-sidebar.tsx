@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   Book,
+  Pencil,
   Frame,
   LifeBuoy,
   Map,
@@ -35,7 +36,7 @@ const data = {
     {
       title: "Estudiantes",
       url: "/estudiantes",
-      icon: Book,
+      icon: Pencil,
 
       items: [
         {

@@ -14,7 +14,7 @@ function useBreadcrumb() {
     if (pathname) {
       const pathSegments = pathname.split('/').filter(segment => segment !== '');
       const formattedBreadcrumb = pathSegments.map(segment => ({
-        label: segment.charAt(0).toUpperCase() + segment.slice(1), // Nombre para mostrar (primera letra mayúscula)
+        label: segment.toUpperCase(), // Nombre para mostrar (primera letra mayúscula)
         slug: segment.toLowerCase(), // Slug para la URL (minúscula)
       }));
       setBreadcrumb([{ label: 'School App', slug: '' }, ...formattedBreadcrumb]);
