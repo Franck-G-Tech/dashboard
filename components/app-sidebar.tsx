@@ -35,17 +35,17 @@ const data = {
   navMain: [
     {
       title: "Estudiantes",
-      url: "/estudiantes",
+      url: "/estudiantes/",
       icon: Pencil,
 
       items: [
         {
           title: "Ver",
-          url: "estudiantes/",
+          url: "/estudiantes/",
         },
         {
           title: "Crear",
-          url: "estudiantes/create",
+          url: "/estudiantes/create/",
         },
       ],
     },
@@ -57,26 +57,26 @@ const data = {
       items: [
         {
           title: "Ver",
-          url: "horarios/",
+          url: "/horarios/",
         },
         {
           title: "Crear",
-          url: "horarios/create",
+          url: "/horarios/create",
         },
       ],
     },
     {
       title: "Maestros",
-      url: "/maestros",
+      url: "/maestros/",
       icon: Book,
       items: [
         {
           title: "Ver",
-          url: "maestros/",
+          url: "/maestros/",
         },
         {
           title: "Crear",
-          url: "maestros/create",
+          url: "/maestros/create",
         },
       ],
     },
@@ -87,11 +87,11 @@ const data = {
       items: [
         {
           title: "Ver",
-          url: "materias/",
+          url: "/materias/",
         },
         {
           title: "Crear",
-          url: "materias/create",
+          url: "/materias/create/",
         },
       ],
     },
@@ -103,11 +103,11 @@ const data = {
       items: [
         {
           title: "Ver",
-          url: "salones/",
+          url: "/salones/",
         },
         {
           title: "Crear",
-          url: "salones/create",
+          url: "/salones/create/",
         },
       ],
     },

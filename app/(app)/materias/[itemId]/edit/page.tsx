@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type Materia = {
   _id: Id<"materias">;
@@ -30,6 +32,23 @@ export default function EditarMateriaPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    if (materia?.nombre && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Materias', slug: 'materias' },
+        { label: materia.nombre, slug: `materias/${itemId}/edit` }, // Usa el nombre de la materia
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Materias', slug: 'materias' },
+        { label: 'Editar', slug: `materias/${itemId}/edit` },
+      ]);
+    }
+  }, [materia?.nombre, itemId, setRoute]);
 
   useEffect(() => {
     if (materia) {
@@ -59,7 +78,7 @@ export default function EditarMateriaPage() {
         id: materia._id,
         ...formData,
       });
-      router.push("/"); // Redirige a la página principal tras la edición exitosa
+      router.push("/materias/"); // Redirige a la página principal tras la edición exitosa
     } catch (err) {
       setError("Ocurrió un error al actualizar la materia: " + err);
     } finally {
@@ -73,6 +92,7 @@ export default function EditarMateriaPage() {
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-2xl font-bold mb-6">Editar Materia</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (

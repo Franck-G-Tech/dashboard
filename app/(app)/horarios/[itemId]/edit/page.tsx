@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type Horario = {
   _id: Id<"horarios">;
@@ -28,12 +30,29 @@ export default function EditarHorarioPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    if (horario?.periodo && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Horarios', slug: 'horarios' },
+        { label: horario.periodo, slug: `horarios/${itemId}/edit` }, // Usa el periodo
+        { label: 'Editar', slug: 'horarios' },
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Horarios', slug: 'horarios' },
+        { label: 'Editar', slug: `horarios/${itemId}/edit`},
+      ]);
+    }
+  }, [horario?.periodo, itemId, setRoute]);
 
   useEffect(() => {
     if (horario) {
       setFormData({
         periodo: horario.periodo,
-        
       });
     }
   }, [horario]);
@@ -71,6 +90,7 @@ export default function EditarHorarioPage() {
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-2xl font-bold mb-6">Editar Horario</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (

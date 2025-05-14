@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import useNavigationStore from '@/store/navigationStore';
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Asegúrate de la ruta correcta
 
 type FormData = {
   numeroMatricula: string;
@@ -23,6 +25,15 @@ export default function NuevoEstudiantePage() {
   const [error, setError] = useState<string | null>(null);
   const createMutation = useMutation(api.estudiantes.crearEstudiante);
   const router = useRouter();
+  const setRoute = useNavigationStore((state) => state.setRoute);
+
+  useEffect(() => {
+    setRoute([
+      { label: 'School App', slug: '' },
+      { label: 'Estudiantes', slug: 'estudiantes' },
+      { label: 'Nuevo', slug: 'create' },
+    ]);
+  }, [setRoute]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +47,7 @@ export default function NuevoEstudiantePage() {
 
     try {
       await createMutation(formData);
-      router.push("/estudiantes"); // Redirige a la página principal tras la creación exitosa
+      router.push("/estudiantes");
     } catch (err) {
       setError("Ocurrió un error al crear el estudiante: " + err);
     } finally {
@@ -45,11 +56,14 @@ export default function NuevoEstudiantePage() {
   };
 
   const handleCancel = () => {
-    router.push("/estudiantes"); // Redirige a la página principal al cancelar
+    router.push("/estudiantes");
   };
 
   return (
     <div className="flex min-h-[calc(70vh-5rem)] flex-col items-center justify-center">
+      {/* Renderiza el componente Breadcrumb aquí */}
+      <Breadcrumb className="mb-4" />
+
       <h1 className="text-2xl font-bold mb-6">Nuevo Estudiante</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (

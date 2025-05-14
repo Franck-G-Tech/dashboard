@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type Maestro = {
   _id: Id<"maestros">;
@@ -32,6 +34,24 @@ export default function EditarMaestroPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    if (maestro?.nombre && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Maestros', slug: 'maestros' },
+        { label: maestro.nombre, slug: `maestros/${itemId}/edit` }, // Usa el nombre del maestro
+        { label: 'Editar', slug: 'maestros' },
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Maestros', slug: 'maestros' },
+        { label: 'Editar', slug: `maestros/${itemId}/edit` },
+      ]);
+    }
+  }, [maestro?.nombre, itemId, setRoute]);
 
   useEffect(() => {
     if (maestro) {
@@ -62,7 +82,7 @@ export default function EditarMaestroPage() {
         id: maestro._id,
         ...formData,
       });
-      router.push("/maestros"); 
+      router.push("/maestros");
     } catch (err) {
       setError("Ocurrió un error al actualizar el maestro: " + err);
     } finally {
@@ -76,6 +96,7 @@ export default function EditarMaestroPage() {
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-2xl font-bold mb-6">Editar maestro</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (

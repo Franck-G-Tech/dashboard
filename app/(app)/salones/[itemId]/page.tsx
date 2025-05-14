@@ -1,18 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
-import { useRouter } from "next/navigation";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 interface Salon {
   _id: Id<"salones">;
   _creationTime: number;
-  numeroEmpleado: string;
-  nombre: string;
-  correo: string;
+  numero: string;
+  edificio: string;
+  planta: string;
 }
 
 export default function DetalleSalon() {
@@ -22,23 +23,41 @@ export default function DetalleSalon() {
   });
 
   const router = useRouter();
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
   const salon = salonData as Salon | null | undefined;
+
+  useEffect(() => {
+    if (salon?.numero && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Salones', slug: 'salones' },
+        { label: salon.numero, slug: `salones/${itemId}` }, // Usa el número del salón
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Salones', slug: 'salones' },
+        { label: 'Detalle', slug: `salones/${itemId}` },
+      ]);
+    }
+  }, [salon?.numero, itemId, setRoute]);
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-3xl font-bold mb-6">Detalles del Salon</h1>
       <br />
-      <div >
+      <div>
         {salon ? (
           <>
             <p>
-              <strong>Matrícula:</strong> {salon.numeroEmpleado}
+              <strong>Número:</strong> {salon.numero}
             </p>
             <p>
-              <strong>Nombre:</strong> {salon.nombre}
+              <strong>Edificio:</strong> {salon.edificio}
             </p>
             <p>
-              <strong>Correo:</strong> {salon.correo}
+              <strong>Planta:</strong> {salon.planta}
             </p>
 
             <br />

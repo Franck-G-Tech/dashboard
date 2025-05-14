@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Importa useEffect
 import { useRouter } from "next/navigation";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type FormData = {
   periodo: string;
@@ -19,6 +21,16 @@ export default function NuevoHorarioPage() {
   const [error, setError] = useState<string | null>(null);
   const createMutation = useMutation(api.horarios.crearHorario);
   const router = useRouter();
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    // Define la ruta para la página de creación de horarios
+    setRoute([
+      { label: 'School App', slug: '' },
+      { label: 'Horarios', slug: 'horarios' },
+      { label: 'Nuevo', slug: 'nuevo' },
+    ]);
+  }, [setRoute]); // Dependencia para que se ejecute solo al montar el componente
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,6 +58,9 @@ export default function NuevoHorarioPage() {
 
   return (
     <div className="flex min-h-[calc(70vh-5rem)] flex-col items-center justify-center">
+      {/* Renderiza el componente Breadcrumb aquí */}
+      <Breadcrumb className="mb-4" />
+
       <h1 className="text-2xl font-bold mb-6">Nuevo Horario</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (

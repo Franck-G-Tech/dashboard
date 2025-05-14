@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type Salon = {
   _id: Id<"salones">;
@@ -32,6 +34,24 @@ export default function EditarSalonPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    if (salon?.numero && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Salones', slug: 'salones' },
+        { label: salon.numero, slug: `salones/${itemId}/edit` }, // Usa el número del salón
+        { label: 'Edit', slug: 'salones' },
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Salones', slug: 'salones' },
+        { label: 'Editar', slug: `salones/${itemId}/edit` },
+      ]);
+    }
+  }, [salon?.numero, itemId, setRoute]);
 
   useEffect(() => {
     if (salon) {
@@ -62,7 +82,7 @@ export default function EditarSalonPage() {
         id: salon._id,
         ...formData,
       });
-      router.push("/salones"); 
+      router.push("/salones");
     } catch (err) {
       setError("Ocurrió un error al actualizar el salon: " + err);
     } finally {
@@ -71,11 +91,12 @@ export default function EditarSalonPage() {
   };
 
   const handleCancel = () => {
-    router.push("/salones"); 
+    router.push("/salones");
   };
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-2xl font-bold mb-6">Editar salon</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (
@@ -108,7 +129,6 @@ export default function EditarSalonPage() {
           <label className="block text-sm font-medium">Planta</label>
           <Input
             name="planta"
-            type="email"
             value={formData.planta}
             onChange={handleChange}
             required

@@ -7,10 +7,12 @@ import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
+import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
+import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
 type Estudiante = {
   _id: Id<"estudiantes">;
-  numeroMatricula: string; 
+  numeroMatricula: string;
   nombre: string;
   correo: string;
 };
@@ -21,8 +23,8 @@ export default function EditarEstudiantePage() {
   const router = useRouter();
   const { itemId } = useParams<{ itemId: string }>();
   const estudiante = useQuery(api.estudiantes.obtenerEstudiantePorId, {
-      id: itemId as Id<"estudiantes">, // Usa 'itemId' aquí también
-    });
+    id: itemId as Id<"estudiantes">, // Usa 'itemId' aquí también
+  });
 
   const updateMutation = useMutation(api.estudiantes.actualizarEstudiante);
   const [formData, setFormData] = useState<FormData>({
@@ -32,6 +34,24 @@ export default function EditarEstudiantePage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
+
+  useEffect(() => {
+    if (estudiante?.nombre && itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Estudiantes', slug: 'estudiantes' },
+        { label: estudiante.nombre, slug: `estudiantes/${itemId}/edit` }, // Usa el nombre
+        { label: 'Editar', slug: '' },
+      ]);
+    } else if (itemId) {
+      setRoute([
+        { label: 'School App', slug: '' },
+        { label: 'Estudiantes', slug: 'estudiantes' },
+        { label: 'Editar', slug: `estudiantes/${itemId}/edit` },
+      ]);
+    }
+  }, [estudiante?.nombre, itemId, setRoute]);
 
   useEffect(() => {
     if (estudiante) {
@@ -42,7 +62,6 @@ export default function EditarEstudiantePage() {
       });
     }
   }, [estudiante]);
-
 
   if (!estudiante) {
     return <div>Estudiante no encontrado.</div>;
@@ -60,9 +79,9 @@ export default function EditarEstudiantePage() {
 
     try {
       await updateMutation({
-          id: estudiante._id,
-          ...formData
-        });
+        id: estudiante._id,
+        ...formData
+      });
       router.push("/estudiantes"); // Redirige a la página principal tras la edición exitosa
     } catch (err) {
       setError("Ocurrió un error al actualizar el estudiante: " + err);
@@ -77,6 +96,7 @@ export default function EditarEstudiantePage() {
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
+      <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <h1 className="text-2xl font-bold mb-6">Editar Estudiante</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (
