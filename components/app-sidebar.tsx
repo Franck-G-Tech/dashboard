@@ -1,7 +1,12 @@
+// components/app-sidebar.tsx
 "use client";
 
 import * as React from "react";
 import {
+  BookOpenCheck,
+  Building2,
+  Users,
+  Clock8,
   Book,
   Pencil,
   Frame,
@@ -9,7 +14,6 @@ import {
   Map,
   PieChart,
   Send,
-  
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -52,7 +56,7 @@ const data = {
     {
       title: "Horarios",
       url: "/horarios",
-      icon: Book,
+      icon: Clock8,
 
       items: [
         {
@@ -68,7 +72,7 @@ const data = {
     {
       title: "Maestros",
       url: "/maestros/",
-      icon: Book,
+      icon: Users,
       items: [
         {
           title: "Ver",
@@ -98,7 +102,7 @@ const data = {
     {
       title: "Salones",
       url: "/salones/",
-      icon: Book,
+      icon: Building2,
 
       items: [
         {
@@ -108,6 +112,21 @@ const data = {
         {
           title: "Crear",
           url: "/salones/create/",
+        },
+      ],
+    },
+    {
+      title: "Calificaciones",
+      url: "/calificaciones",
+      icon: BookOpenCheck,
+      items: [
+        {
+          title: "Ver",
+          url: "/calificaciones",
+        },
+        {
+          title: "Crear",
+          url: "/calificaciones/create",
         },
       ],
     },
