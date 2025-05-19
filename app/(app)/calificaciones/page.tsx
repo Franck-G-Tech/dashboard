@@ -9,31 +9,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface Calificacion {
-  _id: string;
-  //_creationTime: number;
-  alumnoId: string;
-  materiaId: string;
-  nota: number;
-  semestre: string;
-  estudiante: {
-    _id: string;
-    nombre: string;
-    numeroMatricula: string;
-  } | null;
-  materia: {
-    _id: string;
-    nombreMateria: string;
-    identificador: string;
-  } | null;
-}
-
 export default function CalificacionesPage() {
   const setRoute = useNavigationStore((state) => state.setRoute);
-  //const [calificaciones, setCalificaciones] = useState<any[] | null>(null); // Usar any[] o el tipo de tus calificaciones
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
