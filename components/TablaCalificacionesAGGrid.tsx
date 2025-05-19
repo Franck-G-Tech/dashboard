@@ -7,7 +7,7 @@ import { AllCommunityModule } from "ag-grid-community";
 import { provideGlobalGridOptions } from "ag-grid-community";
 provideGlobalGridOptions({ theme: "legacy" });
 import { useTheme } from "next-themes";
-import { Id } from "@/convex/_generated/dataModel";
+
 
 // Registra los módulos de AG Grid
 ModuleRegistry.registerModules([AllCommunityModule]);

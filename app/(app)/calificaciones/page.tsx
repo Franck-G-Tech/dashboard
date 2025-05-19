@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 // Importa tu cliente de Convex y la función fetchCalificaciones
 import { ConvexClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
 
 const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 interface Calificacion {
