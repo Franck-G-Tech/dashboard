@@ -65,8 +65,8 @@ export default function CalificacionesPage() {
       try {
         const data = await fetchCalificaciones();
         setCalificaciones(data);
-      } catch (err: any) {
-        setError(err.message || "Ocurrió un error al obtener las calificaciones.");
+      } catch (err) {
+        setError("Ocurrió un error al obtener las calificaciones.");
       } finally {
         setLoading(false);
       }
