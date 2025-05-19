@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Plus, ChevronDown, ChevronRight } from "lucide-react";
+//import { Plus, ChevronDown, ChevronRight } from "lucide-react";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
