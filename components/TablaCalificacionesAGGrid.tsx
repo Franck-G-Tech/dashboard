@@ -7,6 +7,7 @@ import { AllCommunityModule } from "ag-grid-community";
 import { provideGlobalGridOptions } from "ag-grid-community";
 provideGlobalGridOptions({ theme: "legacy" });
 import { useTheme } from "next-themes";
+import { Id } from "@/convex/_generated/dataModel";
 
 // Registra los módulos de AG Grid
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -14,14 +15,23 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // Definimos una interfaz para los datos que realmente recibirá la tabla
 interface CalificacionConInfo {
   _id: string;
-  _creationTime: number;
-  alumnoId: string; // Aunque en la DB es v.Id, aquí será string después de la consulta
-  materiaId: string; // Igual que alumnoId
+  //_creationTime: number;
+  alumnoId: string;
+  materiaId:  string;
   nota: number;
   semestre: string;
-  estudiante?: { _id: string; nombre: string; numeroMatricula: string }; // Información del estudiante
-  materia?: { _id: string; nombre: string; identificador: string };     // Información de la materia
+   estudiante: {
+    _id: string;
+    nombre: string;
+    numeroMatricula: string;
+  } | null;
+  materia: {
+    _id: string;
+    nombreMateria: string;
+    identificador: string;
+  } | null;
 }
+
 
 interface TablaCalificacionesAGGridProps {
   calificacionesData: CalificacionConInfo[];

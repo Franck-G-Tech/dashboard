@@ -11,9 +11,27 @@ import { cn } from "@/lib/utils";
 // Importa tu cliente de Convex y la función fetchCalificaciones
 import { ConvexClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-
+interface Calificacion {
+  _id: string;
+  //_creationTime: number;
+  alumnoId: string;
+  materiaId:  string;
+  nota: number;
+  semestre: string;
+   estudiante: {
+    _id: string;
+    nombre: string;
+    numeroMatricula: string;
+  } | null;
+  materia: {
+    _id: string;
+    nombreMateria: string;
+    identificador: string;
+  } | null;
+}
 
 export const fetchCalificaciones = async () => {
   try {
@@ -28,7 +46,8 @@ export const fetchCalificaciones = async () => {
 
 export default function CalificacionesPage() {
   const setRoute = useNavigationStore((state) => state.setRoute);
-  const [calificaciones, setCalificaciones] = useState<any[] | null>(null); // Usar any[] o el tipo de tus calificaciones
+  //const [calificaciones, setCalificaciones] = useState<any[] | null>(null); // Usar any[] o el tipo de tus calificaciones
+  const [calificaciones, setCalificaciones] = useState<Calificacion[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();

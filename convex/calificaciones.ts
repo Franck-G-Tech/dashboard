@@ -17,12 +17,12 @@ export const obtenerCalificaciones = query({
         return {
           ...calificacion,
           estudiante: estudiante ? {
-            id: estudiante._id,
+            _id: estudiante._id,
             nombre: estudiante.nombre,
             numeroMatricula: estudiante.numeroMatricula
           } : null,
           materia: materia ? {
-            id: materia._id,
+            _id: materia._id,
             nombreMateria: materia.nombre,
             identificador: materia.identificador
           } : null
