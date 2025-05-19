@@ -17,7 +17,7 @@ import {
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
+  //CollapsibleTrigger,
 } from "./ui/collapsible";
 import { Skeleton } from "./ui/skeleton";
 
