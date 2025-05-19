@@ -4,12 +4,12 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { type ColDef, ModuleRegistry } from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
-import { provideGlobalGridOptions } from "ag-grid-community";
-provideGlobalGridOptions({ theme: "legacy" });
-import { useTheme } from "next-themes";
+import { useTheme } from "next-themes"; 
 import { api } from "@/convex/_generated/api";
 import { useConvex } from "convex/react";
 import { fetchQuery } from "convex/nextjs";
+import { provideGlobalGridOptions } from "ag-grid-community";
+provideGlobalGridOptions({ theme: "legacy" });
 
 // Registra los módulos de AG Grid
 
@@ -54,7 +54,7 @@ export default function TablaCalificacionesAGGrid() {
   const [calificaciones, setCalificaciones] = useState<
     CalificacionConInfo[] | null
   >(null);
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme(); 
   const columnDefs: ColDef[] = useMemo(
     () => [
       {

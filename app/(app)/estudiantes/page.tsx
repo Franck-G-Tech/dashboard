@@ -16,7 +16,7 @@ export default function ConfigPage() {
   }, [setRoute]); // Dependencia para que se ejecute solo al montar el componente
 
   return (
-    <div className="flex min-h-[calc(70vh-5rem)] flex-col items-center justify-center">
+    <div className="flex  flex-col items-center justify-center">
       <h1 className="text-3xl font-bold mb-6">Sistema de Estudiantes</h1>
       <TablaEstudiantes />
       <br />
