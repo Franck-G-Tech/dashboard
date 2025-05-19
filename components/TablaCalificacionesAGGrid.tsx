@@ -7,11 +7,9 @@ import { AllCommunityModule } from "ag-grid-community";
 import { provideGlobalGridOptions } from "ag-grid-community";
 provideGlobalGridOptions({ theme: "legacy" });
 import { useTheme } from "next-themes";
-import { ConvexClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
+import { useConvex } from "convex/react";
 import { fetchQuery } from "convex/nextjs";
-const convex = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-
 
 // Registra los módulos de AG Grid
 
@@ -38,6 +36,7 @@ interface CalificacionConInfo {
 }
 
 export default function TablaCalificacionesAGGrid() {
+  const convex = useConvex();
   const fetchCalificaciones = async () => {
     try {
       const data = await fetchQuery(api.calificaciones.obtenerCalificaciones);
