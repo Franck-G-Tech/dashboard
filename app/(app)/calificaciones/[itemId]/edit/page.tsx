@@ -10,66 +10,66 @@ import { Id } from "@/convex/_generated/dataModel";
 import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
 import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
-type Estudiante = {
-  _id: Id<"estudiantes">;
-  numeroMatricula: string;
-  nombre: string;
-  correo: string;
+type Salon = {
+  _id: Id<"salones">;
+  numero: string;
+  edificio: string;
+  planta: string;
 };
 
-type FormData = Omit<Estudiante, "_id">;
+type FormData = Omit<Salon, "_id">;
 
-export default function EditarEstudiantePage() {
+export default function EditarSalonPage() {
   const router = useRouter();
   const { itemId } = useParams<{ itemId: string }>();
-  const estudiante = useQuery(api.estudiantes.obtenerEstudiantePorId, {
-    id: itemId as Id<"estudiantes">, // Usa 'itemId' aquí también
+  const salon = useQuery(api.salones.obtenerSalonPorId, {
+    id: itemId as Id<"salones">,
   });
 
-  const updateMutation = useMutation(api.estudiantes.actualizarEstudiante);
+  const updateMutation = useMutation(api.salones.actualizarSalon);
   const [formData, setFormData] = useState<FormData>({
-    numeroMatricula: "",
-    nombre: "",
-    correo: "",
+    numero: "",
+    edificio: "",
+    planta: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setRoute = useNavigationStore((state) => state.setRoute); // Obtén la función setRoute
 
   useEffect(() => {
-    if (estudiante?.nombre && itemId) {
+    if (salon?.numero && itemId) {
       setRoute([
         { label: 'School App', slug: '' },
-        { label: 'Estudiantes', slug: 'estudiantes' },
-        { label:  estudiante.nombre, slug: `/${itemId}` }, // Usa el nombre
-        { label: 'Editar', slug: '' },
+        { label: 'Salones', slug: 'salones' },
+        { label: salon.numero, slug: `salones/${itemId}/edit` }, // Usa el número del salón
+        { label: 'Edit', slug: 'salones' },
       ]);
     } else if (itemId) {
       setRoute([
         { label: 'School App', slug: '' },
-        { label: 'Estudiantes', slug: 'estudiantes' },
-        { label: 'Editar', slug: `/${itemId}` },
+        { label: 'Salones', slug: 'salones' },
+        { label: 'Editar', slug: `salones/${itemId}/edit` },
       ]);
     }
-  }, [estudiante?.nombre, itemId, setRoute]);
+  }, [salon?.numero, itemId, setRoute]);
 
   useEffect(() => {
-    if (estudiante) {
+    if (salon) {
       setFormData({
-        numeroMatricula: estudiante.numeroMatricula,
-        nombre: estudiante.nombre,
-        correo: estudiante.correo,
+        numero: salon.numero,
+        edificio: salon.edificio,
+        planta: salon.planta,
       });
     }
-  }, [estudiante]);
+  }, [salon]);
 
-  if (!estudiante) {
-    return <div>Estudiante no encontrado.</div>;
+  if (!salon) {
+    return <div>salon no encontrado.</div>;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,25 +79,25 @@ export default function EditarEstudiantePage() {
 
     try {
       await updateMutation({
-        id: estudiante._id,
-        ...formData
+        id: salon._id,
+        ...formData,
       });
-      router.push("/estudiantes"); // Redirige a la página principal tras la edición exitosa
+      router.push("/salones");
     } catch (err) {
-      setError("Ocurrió un error al actualizar el estudiante: " + err);
+      setError("Ocurrió un error al actualizar el salon: " + err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleCancel = () => {
-    router.push("/estudiantes"); // Redirige a la página principal al cancelar
+    router.push("/salones");
   };
 
   return (
     <div className="flex min-h-[calc(90vh-5rem)] flex-col items-center justify-center">
       <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
-      <h1 className="text-2xl font-bold mb-6">Editar Estudiante</h1>
+      <h1 className="text-2xl font-bold mb-6">Editar salon</h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
         {error && (
           <div className="text-red-500 text-sm p-2 bg-red-50 rounded">
@@ -106,38 +106,42 @@ export default function EditarEstudiantePage() {
         )}
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium">Matrícula</label>
+          <label className="block text-sm font-medium">Numero</label>
           <Input
-            name="numeroMatricula"
-            value={formData.numeroMatricula}
+            name="numero"
+            value={formData.numero}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium">Nombre</label>
+          <label className="block text-sm font-medium">Edificio</label>
           <Input
-            name="nombre"
-            value={formData.nombre}
+            name="edificio"
+            value={formData.edificio}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium">Correo</label>
+          <label className="block text-sm font-medium">Planta</label>
           <Input
-            name="correo"
-            type="email"
-            value={formData.correo}
+            name="planta"
+            value={formData.planta}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+          >
             Cancelar
           </Button>
           <Button type="submit" disabled={isSubmitting}>
