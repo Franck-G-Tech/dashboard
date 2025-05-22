@@ -48,7 +48,7 @@ export const eliminarSalon = mutation({
 export const obtenerSalonPorId = query({ 
   args: { id: v.id("salones") },
   handler: async (ctx, args) => {
-    const estudiante = await ctx.db.get(args.id as Id<'salones'>);
-    return estudiante || null;
+    const salon = await ctx.db.get(args.id as Id<'salones'>);
+    return salon || null;
   },
 });
