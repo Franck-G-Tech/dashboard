@@ -154,10 +154,10 @@ export default function EditarUsuarioPage() {
       // Si todo fue bien, redirigir
       router.push(`/admin/${itemId}`); 
 
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error al actualizar el usuario:", err);
       // Muestra un mensaje de error amigable
-      setError("Ocurrió un error al actualizar el usuario: " + (err.message || String(err)));
+      setError("Ocurrió un error al actualizar el usuario: " + (err || String(err)));
     } finally {
       setIsSubmitting(false);
     }
