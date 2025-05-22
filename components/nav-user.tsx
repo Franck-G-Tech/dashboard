@@ -156,7 +156,7 @@ export function NavUser() {
                 
                 <DropdownMenuItem asChild>
                   <Link href="/admin/create" className="flex items-center gap-2">
-                    <UserRoundCog />
+                    <UserPlus2 />
                     Nuevo
                   </Link>
                 </DropdownMenuItem >
