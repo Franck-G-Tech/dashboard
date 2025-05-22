@@ -3,11 +3,11 @@
 
 import {
   UserPlus2,
-  Bell,
   ChevronsUpDown,
   UserRoundCog,
   LogOut,
   ScanFace,
+  Link,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -154,16 +154,16 @@ export function NavUser() {
               <DropdownMenuSeparator /> */}
               <DropdownMenuGroup>
                 <DropdownMenuItem>
-                  <a href="/admin/create" className="flex items-center gap-2">
+                  <Link href="/admin/create" className="flex items-center gap-2">
                     <UserPlus2 />
                     Nuevo
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <UserRoundCog />
-                  <a href="/admin" className="flex items-center gap-2">
+                  <Link href="/admin" className="flex items-center gap-2">
                     Administradores
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
                 {/* <DropdownMenuItem>
                   <Bell />

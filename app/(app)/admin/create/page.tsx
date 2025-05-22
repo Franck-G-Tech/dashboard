@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 
 import useNavigationStore from "@/store/navigationStore";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { match } from "assert";
 
 type SignUpFormData = {
   name: string;
@@ -57,13 +56,13 @@ export default function SignUpPage() {
         console.log("Usuario registrado:", result);
         router.push("/admin");
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error al registrar usuario:", err);
 
       let errorMessageToDisplay = "Ocurrió un error inesperado al registrar el usuario.";
 
       // --- KEY CHANGE HERE: Parse the error message ---
-      if (err.message) {
+      if (err) {
         // This regex looks for: "Uncaught Error: [YOUR_MESSAGE] at handler"
         
           // Fallback if the specific pattern isn't found
