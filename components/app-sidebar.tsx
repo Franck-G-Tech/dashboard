@@ -29,6 +29,7 @@ import {
   // SidebarMenuButton,
   // SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { SignedOut, SignedIn } from "@clerk/nextjs";
 
 const data = {
   user: {
@@ -209,12 +210,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <SignedOut>
+          <NavUser />
+        </SignedOut>
+        <SignedIn>
+          <NavMain items={data.navMain} />
+        </SignedIn>
         {/* <NavProjects projects={data.projects} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser/>
+        <SignedIn>
+          <NavUser />
+        </SignedIn>
       </SidebarFooter>
     </Sidebar>
   );

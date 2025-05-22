@@ -17,7 +17,7 @@ export default function ConfigPage() {
 
   return (
     <div className="flex  flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">Sistema de Estudiantes</h1>
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Estudiantes</h1>
       <TablaEstudiantes />
       <br />
       <button className="mt-4 px-4 py-2 border rounded">
