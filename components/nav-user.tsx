@@ -7,8 +7,8 @@ import {
   UserRoundCog,
   LogOut,
   ScanFace,
-  Link,
 } from "lucide-react";
+import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -153,15 +153,16 @@ export function NavUser() {
               </DropdownMenuGroup>
               <DropdownMenuSeparator /> */}
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                
+                <DropdownMenuItem asChild>
                   <Link href="/admin/create" className="flex items-center gap-2">
-                    <UserPlus2 />
+                    <UserRoundCog />
                     Nuevo
                   </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <UserRoundCog />
+                </DropdownMenuItem >
+                <DropdownMenuItem asChild>
                   <Link href="/admin" className="flex items-center gap-2">
+                    <UserRoundCog />
                     Administradores
                   </Link>
                 </DropdownMenuItem>
