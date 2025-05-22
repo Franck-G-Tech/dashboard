@@ -221,7 +221,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         <SignedIn>
-          <NavUser />
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <NavUser />
+          </div>
         </SignedIn>
       </SidebarFooter>
     </Sidebar>
