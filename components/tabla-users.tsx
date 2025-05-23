@@ -39,7 +39,9 @@ export function TablaAdministradores() {
   const handleDelete = async (userId: Id<"users">) => {
     try {
       await deleteUserAction({ userId });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
   // Loading state with Skeleton
   if (users === undefined) {
