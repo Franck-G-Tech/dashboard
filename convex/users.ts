@@ -5,13 +5,13 @@ import { createClerkClient } from "@clerk/backend";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import { query, mutation, internalMutation } from "./_generated/server";
+import { Resend } from "resend";
 
 // ====================================================================
 // 1. Inicialización de Clientes Externos (Clerk)
 // ====================================================================
-const clerk = createClerkClient({
-  secretKey: process.env.CLERK_SECRET_KEY,
-});
+const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+const resend = new Resend(process.env.RESEND_API_KEY!);
 
 // ====================================================================
 // 2. Actions (Funciones que modifican el estado de la DB o tienen efectos secundarios)
@@ -33,6 +33,12 @@ export const createUser = action({
     email: v.string(),
     password: v.string(),
   },
+  
+   //const resetUrl = "/https://dashboard-flax-xi.vercel.app";
+
+   
+  
+    
 
   handler: async (
     ctx,
@@ -48,9 +54,7 @@ export const createUser = action({
       });
       if (clerkUsersWithEmail.data.length > 0) {
         // Lanzamos un Error estándar
-        throw new Error(
-          "Este correo electrónico ya está registrado."
-        );
+        throw new Error("Este correo electrónico ya está registrado.");
       }
 
       // 1.2: Verificar si el email ya existe en Convex (llama a la query interna)
@@ -86,10 +90,22 @@ export const createUser = action({
       );
 
       console.log(
-        `Usuario creado exitosamente. Clerk ID: ${clerkUser.id}, Convex ID: ${convexUserId}`
+        `Usuario creado exitosamente. Clerk ID: ${clerkUser.id}, Convex ID: ${convexUserId}, email: ${args.email} `
       );
+       await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: args.email,
+        subject: "¡Bienvenido a School-App!",
+        html: `
+        <h1>Bienvenido a nuestra plataforma</h1>
+        
+        <a href="https://dashboard-flax-xi.vercel.app">Empezar</a>
+        
+      `,
+      });
 
-      return { clerkId: clerkUser.id, convexId: convexUserId };
+      return { clerkId: clerkUser.id, convexId: convexUserId,  };
+      
     } catch (error: any) {
       // --- PASO 4: Manejo de Errores y Compensación ---
       console.error("Error en la acción createUser:", error);
@@ -112,15 +128,12 @@ export const createUser = action({
         }
       }
 
-      
-
+      // Re-lanzar el error como un Error estándar de JS
       if (typeof error === "object" && error !== null && "message" in error) {
-        // Aquí podrías tener lógica para limpiar mensajes de error de Clerk si no quieres modificar ClerkError
-        // Pero para los errores que TÚ lanzas, ya son limpios.
-        throw new Error(error.message); // Esto pasará tu mensaje amigable
+        throw new Error(error.message);
       } else {
         throw new Error(
-          "Fallo al crear el usuario. Por favor, inténtalo de nuevo o contacta a soporte."
+          "Fallo al crear el usuario. Por favor, inténtalo de nuevo o contacta a soporte. Detalles: Error desconocido."
         );
       }
     }
@@ -156,42 +169,6 @@ export const updateUser = mutation({
     await ctx.db.patch(id, updates);
   },
 });
-
-// export const updateUserInClerkAndConvex = action({
-//   args: {
-//     userId: v.id("users"), // The Convex ID of the user
-//     clerkId: v.string(),   // The Clerk ID of the user
-//     newEmail: v.string(),  // The new email address
-//   },
-//   handler: async (ctx, args) => {
-//     // 1. Update email in Clerk
-//     try {
-//      await clerk.users.updateUser(args.clerkId, {
-//         // CORRECCIÓN AQUÍ: Usar la estructura correcta para emailAddress
-//           primaryEmailAddressID: {
-//           add: [args.newEmail],    // Agrega la nueva dirección de correo
-//           primary: args.newEmail   // La establece como la principal
-//         }
-//       });
-//       console.log(`Clerk user ${args.clerkId} email updated to ${args.newEmail}`);
-//     } catch (clerkError: any) {
-//       console.error("Error updating email in Clerk:", clerkError);
-//       // Re-throw to inform frontend
-//       throw new Error(`Failed to update email in Clerk: ${clerkError.errors?.[0]?.message || clerkError.message}`);
-//     }
-
-//     // 2. Trigger internal mutation to update email in Convex
-//     // This is crucial for keeping Convex in sync after Clerk's update
-//     await ctx.runMutation(internal.users.updateEmailInConvex, {
-//       clerkId: args.clerkId,
-//       email: args.newEmail,
-//     });
-//     console.log(`Convex user with clerkId ${args.clerkId} email updated to ${args.newEmail}`);
-//   },
-// });
-
-// INTERNAL MUTATION: Only accessible from other Convex functions (like the action above)
-// This is what the webhook will also call to keep Convex in sync with Clerk
 
 export const updateEmailInConvex = internalMutation({
   args: {
@@ -301,5 +278,77 @@ export const updateUserInClerkAndConvex = action({
     console.log(
       `Usuario en Convex con clerkId ${args.clerkId} email actualizado a ${args.newEmail}`
     );
+  },
+});
+
+//Eliminar usuario de Clerk y Convex
+export const deleteUser = action({
+  args: {
+    userId: v.id("users"), // El ID del usuario en tu tabla de Convex
+  },
+  handler: async (ctx, args) => {
+    console.log(
+      `[ACTION] Iniciando eliminación para usuario Convex ID: ${args.userId}`
+    );
+
+    // 1. Obtener los datos del usuario de Convex para obtener el clerkId
+    // Llama a la nueva función interna de internal_users.ts
+    const userToDelete = await ctx.runQuery(
+      internal.internal_users.getUserByIdInternal,
+      {
+        // <-- ¡NUEVA LLAMADA!
+        id: args.userId,
+      }
+    );
+
+    if (!userToDelete) {
+      console.warn(
+        `[ACTION] Usuario con Convex ID ${args.userId} no encontrado para eliminación.`
+      );
+      throw new Error("Usuario no encontrado.");
+    }
+
+    // 2. Eliminar el usuario de Clerk (si tiene un clerkId)
+    if (userToDelete.clerkId) {
+      console.log(
+        `[ACTION] Intentando eliminar usuario de Clerk con ID: ${userToDelete.clerkId}`
+      );
+      try {
+        await clerk.users.deleteUser(userToDelete.clerkId);
+        console.log(
+          `[ACTION] Usuario de Clerk ${userToDelete.clerkId} eliminado exitosamente.`
+        );
+        
+      } catch (clerkError: any) {
+        console.error(
+          `[ACTION ERROR] Fallo al eliminar usuario de Clerk ${userToDelete.clerkId}:`,
+          clerkError
+        );
+        throw new Error(
+          `Fallo al eliminar usuario de Clerk: ${
+            clerkError.errors?.[0]?.message ||
+            clerkError.message ||
+            String(clerkError)
+          }`
+        );
+      }
+    } else {
+      console.log(
+        `[ACTION] Usuario Convex ID ${args.userId} no tiene Clerk ID. Solo eliminando de Convex.`
+      );
+    }
+
+    // 3. Eliminar el usuario de Convex
+    // Llama a la nueva función interna de internal_users.ts
+    await ctx.runMutation(internal.internal_users.deleteUserInternal, {
+      // <-- ¡NUEVA LLAMADA!
+      id: args.userId,
+      
+    });
+    console.log(
+      `[ACTION] Usuario Convex ID ${args.userId} eliminado de Convex exitosamente.`
+    );
+
+    return { success: true };
   },
 });

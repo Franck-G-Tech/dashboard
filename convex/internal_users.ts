@@ -26,11 +26,30 @@ export const insertUser = internalMutation({
     name: v.string(),
     email: v.string(),
     // === ¡ESTE ES EL CAMBIO CLAVE! ===
-    status: v.union(v.literal("active"), v.literal("blocked"), v.literal("deleted")),
+    status: v.union(
+      v.literal("active"),
+      v.literal("blocked"),
+      v.literal("deleted")
+    ),
     // =================================
     createdAt: v.number(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("users", args);
+  },
+});
+
+export const getUserByIdInternal = internalQuery({
+  args: { id: v.id("users") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});
+
+export const deleteUserInternal = internalMutation({
+  // <-- Esta es la otra
+  args: { id: v.id("users") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
   },
 });
