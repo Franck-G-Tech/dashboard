@@ -149,6 +149,6 @@ export function TablaAdministradores() {
           />
         )}
       </div>
-    </div>
+    
   );
 }
