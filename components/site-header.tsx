@@ -2,7 +2,7 @@
 
 import React from "react"; // Importa la biblioteca React para crear componentes
 import { SidebarIcon } from "lucide-react"; // Importa el icono de la barra lateral desde la biblioteca "lucide-react"
-import { ThemeToggle } from "./theme/theme-toggle"; // Importa el componente "ThemeToggle" desde un archivo local
+import { ThemeToggle } from "./theme/theme-toggle"; 
 //import { SearchForm } from "@/components/search-form"; // Comentado: Importación del componente de búsqueda (no se usa)
 import {
   Breadcrumb,

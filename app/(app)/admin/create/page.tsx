@@ -35,6 +35,7 @@ export default function SignUpPage() {
   useEffect(() => {
     setRoute([
       { label: "School App", slug: "" },
+      { label: "Administradores", slug: "admin" },
       { label: "Nuevo Usuario", slug: "signup" },
     ]);
   }, [setRoute]);

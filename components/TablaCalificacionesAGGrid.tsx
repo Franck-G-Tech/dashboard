@@ -4,7 +4,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { type ColDef, ModuleRegistry } from "ag-grid-community";
 import { AllCommunityModule } from "ag-grid-community";
-import { useTheme } from "next-themes"; 
+import { useTheme } from "next-themes";
 import { api } from "@/convex/_generated/api";
 import { useConvex } from "convex/react";
 import { fetchQuery } from "convex/nextjs";
@@ -54,7 +54,7 @@ export default function TablaCalificacionesAGGrid() {
   const [calificaciones, setCalificaciones] = useState<
     CalificacionConInfo[] | null
   >(null);
-  const { resolvedTheme } = useTheme(); 
+  const { resolvedTheme } = useTheme();
   const columnDefs: ColDef[] = useMemo(
     () => [
       {
@@ -93,25 +93,43 @@ export default function TablaCalificacionesAGGrid() {
   );
 
   return (
-    <div
-      className={`ag-theme-quartz ${
-        resolvedTheme === "light" ? "ag-theme-quartz" : "ag-theme-quartz-dark"
-      }`}
-      style={{ height: "300px", width: "81%", margin: "20px auto" }}
-    >
-      <AgGridReact
-        rowData={calificaciones}
-        columnDefs={columnDefs}
-        // pagination={true}
-        //paginationPageSize={10}
-
-        // columnDefs={columnDefs}
-        //   defaultColDef={defaultColDef}
-        //   pagination={true}
-        //   paginationPageSize={10}
-        //   animateRows={true}
-        //   rowSelection="single"
-      />
+    <div className="flex flex-col items-center p-4 w-full">
+      <div
+        className={`ag-theme-quartz ${
+          resolvedTheme === "light" ? "ag-theme-quartz" : "ag-theme-quartz-dark"
+        }`}
+        style={{ height: "350px", width: "81%", margin: "20px auto" }}
+      >
+        <AgGridReact
+          rowData={calificaciones}
+          columnDefs={columnDefs}
+          // pagination={true} // Para paginación
+          // paginationPageSize={10} // Tamaño de la página
+          // defaultColDef={defaultColDef} // Definiciones por defecto para todas las columnas
+        />
+      </div>
     </div>
   );
 }
+//     <div
+//       className={`ag-theme-quartz ${
+//         resolvedTheme === "light" ? "ag-theme-quartz" : "ag-theme-quartz-dark"
+//       }`}
+//       style={{ height: "300px", width: "81%", margin: "20px auto" }}
+//     >
+//       <AgGridReact
+//         rowData={calificaciones}
+//         columnDefs={columnDefs}
+//         // pagination={true}
+//         //paginationPageSize={10}
+
+//         // columnDefs={columnDefs}
+//         //   defaultColDef={defaultColDef}
+//         //   pagination={true}
+//         //   paginationPageSize={10}
+//         //   animateRows={true}
+//         //   rowSelection="single"
+//       />
+//     </div>
+//   );
+// }
