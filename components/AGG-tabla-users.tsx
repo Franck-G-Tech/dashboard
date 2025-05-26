@@ -9,9 +9,6 @@ import { useRouter } from "next/navigation";
 import React, { useMemo, useCallback } from "react"; // <-- IMPORTA useCallback
 import { useTheme } from "next-themes";
 
-// Componentes de Shadcn UI
-import { Button } from "./ui/button";
-
 // AG Grid Imports
 import { AgGridReact } from "ag-grid-react";
 import {
