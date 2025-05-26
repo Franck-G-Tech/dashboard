@@ -9,6 +9,7 @@ import {
   ScanFace,
 } from "lucide-react";
 import Link from "next/link";
+import React, { useRef } from "react"; // <-- Importamos useRef
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,7 +29,7 @@ import {
 } from "@/components/ui/sidebar";
 
 // ====================================================================
-// ¡NUEVAS IMPORTACIONES DE CLERK!
+// IMPORTACIONES DE CLERK
 import {
   useUser,
   useClerk,
@@ -41,17 +42,66 @@ import {
 // Ya no recibe 'user' como prop, lo obtiene de Clerk
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { user, isSignedIn } = useUser(); // Obtiene el objeto de usuario y el estado de autenticación de Clerk
-  const { signOut } = useClerk(); // Obtiene la función para cerrar sesión de Clerk
+  const { user, isSignedIn, isLoaded } = useUser(); // <-- Aseguramos isLoaded para el estado de carga del usuario de Clerk
+  const { signOut } = useClerk();
+
+  // Ref para el input de archivo oculto
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Manejador del cambio de archivo para Clerk
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    // Verificamos que haya un archivo y que el usuario de Clerk esté cargado y disponible
+    if (!file || !user || !isLoaded) {
+      console.error(
+        "No se seleccionó ningún archivo o el usuario de Clerk no está cargado."
+      );
+      return;
+    }
+
+    // Opcional: Validar tipo de archivo y tamaño antes de subir a Clerk
+    if (!file.type.startsWith("image/")) {
+      alert("Por favor, selecciona un archivo de imagen.");
+      return;
+    }
+    // Clerk tiene sus propios límites de tamaño de archivo (generalmente 5MB).
+    // Puedes añadir una validación temprana aquí si lo deseas.
+    if (file.size > 5 * 1024 * 1024) {
+      // Ejemplo: 5MB
+      alert("La imagen es demasiado grande. Máximo 5MB.");
+      return;
+    }
+
+    try {
+      // Usar la API de Clerk para actualizar la foto de perfil
+      await user.setProfileImage({ file });
+
+      alert("¡Foto de perfil actualizada exitosamente en Clerk!");
+      // Clerk se encarga de actualizar user.imageUrl y el componente se re-renderizará automáticamente.
+    } catch (error) {
+      console.error("Error al actualizar la foto de perfil en Clerk:", error);
+      alert(
+        `Fallo al actualizar la foto de perfil: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+    } finally {
+      // Limpiar el input para permitir subir la misma imagen de nuevo si es necesario
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   // Función auxiliar para obtener la información del usuario de Clerk de forma segura
   const getUserDisplayInfo = () => {
-    // Si no hay usuario o no está autenticado, devuelve información de invitado
-    if (!user || !isSignedIn) {
-      return { name: "Invitado", email: "N/A", avatar: "" };
+    // Si no hay usuario o no está autenticado o no ha cargado, devuelve información de invitado
+    if (!user || !isSignedIn || !isLoaded) {
+      return { name: "Cargando...", email: "...", avatar: "" };
     }
 
-    // Clerk User object tiene diferentes propiedades, mapeamos a lo que el componente espera
     const name =
       user.fullName ||
       user.firstName ||
@@ -63,7 +113,7 @@ export function NavUser() {
     return { name, email, avatar };
   };
 
-  const displayUser = getUserDisplayInfo(); // Prepara la información del usuario para mostrar
+  const displayUser = getUserDisplayInfo();
 
   return (
     <SidebarMenu>
@@ -77,7 +127,6 @@ export function NavUser() {
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarFallback className="rounded-lg">
                   <ScanFace className="size-4" />{" "}
-                  {/* Icono de "iniciar sesión" */}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -105,7 +154,6 @@ export function NavUser() {
                   />
                   <AvatarFallback className="rounded-lg">
                     {displayUser.name ? displayUser.name[0] : "CN"}{" "}
-                    {/* Primera letra del nombre */}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -118,7 +166,7 @@ export function NavUser() {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" // <-- Corregido el ancho para usar la variable CSS de Shadcn
               side={isMobile ? "bottom" : "right"}
               align="end"
               sideOffset={4}
@@ -127,8 +175,17 @@ export function NavUser() {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
+                    title="Cambiar Foto"
+                      onClick={() => fileInputRef.current?.click()}
                       src={displayUser.avatar}
                       alt={displayUser.name}
+                    />
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      className="hidden"
+                      accept="image/*" // Solo acepta archivos de imagen
+                      onChange={handleFileChange}
                     />
                     <AvatarFallback className="rounded-lg">
                       {displayUser.name ? displayUser.name[0] : "CN"}
@@ -144,38 +201,38 @@ export function NavUser() {
                   </div>
                 </div>
               </DropdownMenuLabel>
-              {/* <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator /> */}
-              <DropdownMenuGroup>
-                
                 <DropdownMenuItem asChild>
-                  <Link href="/admin/create" className="flex items-center gap-2">
-                    <UserPlus2 />
+                  <Link
+                    href="/admin/create"
+                    className="flex items-center gap-2"
+                  >
+                    <UserPlus2 className="size-4" /> {/* Añadido size */}
                     Nuevo
                   </Link>
-                </DropdownMenuItem >
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin" className="flex items-center gap-2">
-                    <UserRoundCog />
+                    <UserRoundCog className="size-4" /> {/* Añadido size */}
                     Administradores
                   </Link>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem>
-                  <Bell />
-                  Notificaciones
-                </DropdownMenuItem> */}
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="https://dashboard.clerk.com/apps/app_2xKmXNdPcUlLshzC2yW6PRUoqB0/instances/ins_2xKmXOEalbGfkt7pvT39czPUA3M"
+                    className="flex items-center gap-2"
+                  >
+                    <UserRoundCog className="size-4" /> {/* Añadido size */}
+                    Clerk
+                  </Link>
+                </DropdownMenuItem>
+                {/* Nueva opción para cambiar la foto de perfil */}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               {/* ==================================================================== */}
               {/* Funcionalidad de Cerrar Sesión */}
               <DropdownMenuItem onClick={() => signOut()}>
-                <LogOut />
+                <LogOut className="size-4" /> {/* Añadido size */}
                 Cerrar Sesión
               </DropdownMenuItem>
               {/* ==================================================================== */}
