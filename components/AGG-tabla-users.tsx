@@ -19,12 +19,16 @@ import {
   ICellRendererParams,
   RowDoubleClickedEvent,
   ModuleRegistry,
-  ClientSideRowModelModule,
+  //ClientSideRowModelModule,
+  AllCommunityModule,
 } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { provideGlobalGridOptions } from "ag-grid-community";
+provideGlobalGridOptions({ theme: "legacy" });
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+//ModuleRegistry.registerModules([ClientSideRowModelModule]);
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 import DeleteButtonRenderer from "@/components/ag-grid-renderers/DeleteButtonRenderer";
 
@@ -73,7 +77,7 @@ export function TablaAdministradores() {
         sortable: true,
         filter: true,
         flex: 1,
-        cellRenderer: (params: ICellRendererParams<User, User['status']>) => {
+        cellRenderer: (params: ICellRendererParams<User, User["status"]>) => {
           const status = params.value;
           let className = "font-medium";
           if (status === "active") {
@@ -124,9 +128,6 @@ export function TablaAdministradores() {
     );
   }
 
-  const agGridThemeClass =
-    resolvedTheme === "dark" ? "ag-theme-quartz-dark" : "ag-theme-quartz";
-
   return (
     <div className="flex flex-col items-center p-4 w-full">
       <div className="w-full max-w-4xl flex justify-between items-center mb-6">
@@ -143,7 +144,9 @@ export function TablaAdministradores() {
       </div>
 
       <div
-        className={agGridThemeClass}
+        className={`ag-theme-quartz ${
+          resolvedTheme === "light" ? "ag-theme-quartz" : "ag-theme-quartz-dark"
+        }`}
         style={{ height: "350px", width: "81%", margin: "20px auto" }}
       >
         {users.length === 0 ? (
