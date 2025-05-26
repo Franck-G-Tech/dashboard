@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { TablaMaterias } from "@/components/tabla-materias";
-import Link from "next/link";
 import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
 import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 

@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { TablaMaestros } from "@/components/tabla-maestros";
-import Link from "next/link";
 import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
 import { Breadcrumb } from "@/components/ui/breadcrumb"; // Importa el componente Breadcrumb
 
@@ -23,7 +22,6 @@ export default function ConfigPage() {
       <br />
       <TablaMaestros />
       <br />
-      
     </div>
   );
 }
