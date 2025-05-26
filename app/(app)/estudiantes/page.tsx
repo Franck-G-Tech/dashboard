@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
 import { TablaEstudiantes } from "@/components/tabla-estudiantes";
-import Link from "next/link";
 import useNavigationStore from '@/store/navigationStore'; // Importa el store de navegación
 
 export default function ConfigPage() {
@@ -20,9 +19,6 @@ export default function ConfigPage() {
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Estudiantes</h1>
       <TablaEstudiantes />
       <br />
-      <button className="mt-4 px-4 py-2 border rounded">
-        <Link href="/">Ir a inicio</Link>
-      </button>
     </div>
   );
 }

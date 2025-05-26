@@ -66,12 +66,7 @@ export default function DetalleHorario() {
         )}
       </div>
       <br />
-      <button
-        onClick={() => window.history.back()}
-        className="mt-4 px-4 py-2 border rounded"
-      >
-        Volver
-      </button>
+      
     </div>
   );
 }

@@ -17,7 +17,6 @@ import {
 import {
   Collapsible,
   CollapsibleContent,
-  //CollapsibleTrigger,
 } from "./ui/collapsible";
 import { Skeleton } from "./ui/skeleton";
 
@@ -109,16 +108,15 @@ export function TablaEstudiantes() {
           {" "}
           {/* Contenedor para título y botón */}
           <p className="text-lg font-semibold">Lista de Estudiantes</p>
-          <div className="flex justify-end">
+          
             <Button
               onClick={() => router.push(`/estudiantes/create`)}
-              variant="outline" // Usa el estilo "outline" para el borde
-              size="icon" // Usa un tamaño "icon" si lo tienes definido en tu Button
-              className="rounded-full border-gray-400 hover:border-gray-500" // Estilos circulares y de borde
+              variant="outline"
+              className="rounded-full border-white-200 hover:border-gray-500 " // Estilos circulares y de borde
             >
-              +
+              Nuevo Estudiante
             </Button>
-          </div>
+          
         </div>
 
         <Table>
