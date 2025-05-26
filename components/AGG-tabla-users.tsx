@@ -129,20 +129,6 @@ export function TablaAdministradores() {
   }
 
   return (
-    <div className="flex flex-col items-center p-4 w-full">
-      <div className="w-full max-w-4xl flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Gestión de Administradores</h1>
-        <Button
-          onClick={() => router.push(`/admin/create`)}
-          variant="outline"
-          size="icon"
-          className="rounded-full border-gray-400 hover:border-gray-500"
-          title="Agregar nuevo administrador"
-        >
-          +
-        </Button>
-      </div>
-
       <div
         className={`ag-theme-quartz ${
           resolvedTheme === "light" ? "ag-theme-quartz" : "ag-theme-quartz-dark"
