@@ -65,7 +65,7 @@ const HomePage = () => {
               <Button
                 asChild
                 variant="outline"
-                className="bg-purple-200/20 text-purple-300 hover:bg-purple-950 hover:text-gray-50 border-purple-300/30 transition-all duration-200"
+                className="bg-blue-200/20 text-blue-300 hover:bg-blue-950 hover:text-gray-50 border-blue-300/30 transition-all duration-200"
               >
                 <Link href="/horarios">Gestionar Horarios</Link>
               </Button>
@@ -73,7 +73,7 @@ const HomePage = () => {
               <Button
                 asChild // Convierte el botón en un enlace de Next.js
                 variant="outline"
-                className="bg-purple-200/20 text-purple-300 hover:bg-purple-950 hover:text-gray-50 border-purple-300/30 transition-all duration-200"
+                className="bg-blue-200/20 text-blue-300 hover:bg-blue-950 hover:text-gray-50 border-blue-300/30 transition-all duration-200"
               >
                 <Link href="/maestros">Gestionar Maestros</Link>
               </Button>
@@ -97,7 +97,7 @@ const HomePage = () => {
               <Button
                 asChild
                 variant="outline"
-                className="bg-purple-200/20 text-purple-300 hover:bg-purple-950 hover:text-gray-50 border-purple-300/30 transition-all duration-200"
+                className="bg-blue-200/20 text-blue-300 hover:bg-blue-950 hover:text-gray-50 border-blue-300/30 transition-all duration-200"
               >
                 <Link href="/calificaciones">Gestionar Calificaciones</Link>
               </Button>
