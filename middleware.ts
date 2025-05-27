@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher([
   '/',
-  '/sign-in(.*)'
+  '/sign-in(.*)',
+  '/not-found'
+
   //,'/sign-up(.*)'
   
   // Agrega aquí otras rutas públicas si las tienes
