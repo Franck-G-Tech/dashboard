@@ -26,7 +26,7 @@ export default function CalificacionesPage() {
         <Button
           onClick={() => router.push(`/calificaciones/create`)}
           variant="outline"
-          className="rounded-full border-gray-400 hover:border-blue-900"
+          className="rounded-full bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
           title="Registrar Calificación"
         >
           Registrar Calificación

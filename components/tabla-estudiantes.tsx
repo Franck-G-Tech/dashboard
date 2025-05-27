@@ -112,7 +112,7 @@ export function TablaEstudiantes() {
             <Button
               onClick={() => router.push(`/estudiantes/create`)}
               variant="outline"
-              className="rounded-full border-white-200 hover:border-gray-500 " // Estilos circulares y de borde
+              className="rounded-full bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
             >
               Nuevo Estudiante
             </Button>

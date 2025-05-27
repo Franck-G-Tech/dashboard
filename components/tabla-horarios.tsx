@@ -62,8 +62,8 @@ export function TablaHorarios() {
           <div className="flex items-center justify-center "><Button
               onClick={() => router.push(`/horarios/create`)}
               variant="outline" // Usa el estilo "outline" para el borde
-              size="icon" // Usa un tamaño "icon" si lo tienes definido en tu Button
-              className="rounded-full border-gray-400 hover:border-gray-500" // Estilos circulares y de borde
+              
+              className="rounded-full bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
             >+
               
             </Button></div>

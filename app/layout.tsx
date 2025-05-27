@@ -6,10 +6,11 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import "@/app/globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "Mi dashboard",
-  description: "WebApp para gestionar mi negocio",
+  title: "School-App",
+  description: "WebApp para gestionar una school",
   icons: {
     icon: "/favicon.ico",
   },
@@ -37,7 +38,10 @@ export default function RootLayout({
               <SidebarProvider className="flex flex-col">
                 <SiteHeader />
                 <div className="flex flex-1">
-                  <AppSidebar />
+                  <SignedIn>
+                    <AppSidebar />
+                  </SignedIn>
+
                   <SidebarInset>
                     <div className="flex flex-1 flex-col gap-4 p-4">
                       <ConvexClientProvider>
