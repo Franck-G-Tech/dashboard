@@ -2,7 +2,7 @@
 
 import React from "react"; // Importa la biblioteca React para crear componentes
 import { SidebarIcon } from "lucide-react"; // Importa el icono de la barra lateral desde la biblioteca "lucide-react"
-import { ThemeToggle } from "./theme/theme-toggle"; 
+import { ThemeToggle } from "./theme/theme-toggle";
 //import { SearchForm } from "@/components/search-form"; // Comentado: Importación del componente de búsqueda (no se usa)
 import {
   Breadcrumb,
@@ -11,7 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"; 
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -25,25 +25,23 @@ export function SiteHeader() {
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
       <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
-       <SignedIn>
-        <Button
-          className="h-8 w-8"
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-        >
-          <SidebarIcon />
-        </Button>
+        <SignedIn>
+          <Button
+            className="h-8 w-8"
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+          >
+            <SidebarIcon />
+          </Button>
         </SignedIn>
 
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb className="hidden sm:block">
           {/*
-            * - "className='hidden sm:block'":  Oculta el breadcrumb en pantallas pequeñas y lo muestra en pantallas medianas y grandes.
-            */}
+           * - "className='hidden sm:block'":  Oculta el breadcrumb en pantallas pequeñas y lo muestra en pantallas medianas y grandes.
+           */}
           <BreadcrumbList>
-            
-            
             {Array.isArray(breadcrumbPath) &&
               breadcrumbPath.map((item, index) => (
                 /*
@@ -54,9 +52,9 @@ export function SiteHeader() {
                  */
                 <React.Fragment key={index}>
                   {/*
-                    * - "React.Fragment":  Agrupa elementos sin agregar un nodo extra al DOM.
-                    * - "key={index}":  Proporciona una clave única para cada elemento en la iteración.
-                    */}
+                   * - "React.Fragment":  Agrupa elementos sin agregar un nodo extra al DOM.
+                   * - "key={index}":  Proporciona una clave única para cada elemento en la iteración.
+                   */}
                   {index < breadcrumbPath.length - 1 ? (
                     /* Si no es el último elemento del breadcrumb */
                     <BreadcrumbItem>
@@ -79,13 +77,11 @@ export function SiteHeader() {
                     </BreadcrumbItem>
                   )}
 
-                  {index < breadcrumbPath.length - 1 && (
-                    <BreadcrumbSeparator />
-                  )}
+                  {index < breadcrumbPath.length - 1 && <BreadcrumbSeparator />}
                   {/*
-                    * Si no es el último elemento, muestra un separador.
-                    * - "BreadcrumbSeparator":  Muestra un separador visual entre los elementos del breadcrumb.
-                    */}
+                   * Si no es el último elemento, muestra un separador.
+                   * - "BreadcrumbSeparator":  Muestra un separador visual entre los elementos del breadcrumb.
+                   */}
                 </React.Fragment>
               ))}
           </BreadcrumbList>
@@ -94,10 +90,9 @@ export function SiteHeader() {
         {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
         {/* Comentado: Renderiza el componente de búsqueda (no se usa en este código) */}
         <div className="justify-end flex-1 sm:flex ">
-        <Separator orientation="vertical" className="mr-2 h-4" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
           <ThemeToggle />
         </div>
-       
       </div>
     </header>
   );
