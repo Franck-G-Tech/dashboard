@@ -15,7 +15,7 @@ const SplitTextAnimation = ({
   const characters = text.split('');
 
   const trail = useTrail(characters.length, {
-    config: { mass: 16, tension: 2000, friction: 200, ...trailConfig },
+    config: { mass: 10, tension: 2000, friction: 200, ...trailConfig },
     from: { opacity: 0, y: 50, transform: 'scale(20)', ...initialConfig },
     to: { opacity: 1, y: 0, transform: 'scale(1.5)' },
     delay: delay,

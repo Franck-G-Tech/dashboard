@@ -29,8 +29,11 @@ const HomePage = () => {
     <div className="flex min-h-[calc(70vh-5rem)] flex-col items-center justify-center">
       <Breadcrumb className="mb-4" /> {/* Renderiza el Breadcrumb */}
       <div className="text-center -space-y-6">
-        <AnimatedBox text="Bienvenido a School App" />
-      </div>
+        <AnimatedBox text="Bienvenido" />
+        <AnimatedBox text="  " />
+        <AnimatedBox text="School App" />
+      </div><br />
+      
       <br />
       <Card className="bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl hover:shadow-purple-500/20 transition-all duration-300">
         <CardHeader>
