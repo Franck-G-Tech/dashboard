@@ -12,7 +12,7 @@ import { Resend } from "resend";
 // ====================================================================
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 const resend = new Resend(process.env.RESEND_API_KEY!);
-
+const emailResend= "School-App<noreply@franck.korian-labs.net>";
 // ====================================================================
 // 2. Actions (Funciones que modifican el estado de la DB o tienen efectos secundarios)
 // ====================================================================
@@ -93,7 +93,7 @@ export const createUser = action({
         `Usuario creado exitosamente. Clerk ID: ${clerkUser.id}, Convex ID: ${convexUserId}, email: ${args.email} `
       );
        await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: emailResend,
         to: args.email,
         subject: "¡Bienvenido a School-App!",
         html: `
