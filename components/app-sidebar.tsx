@@ -186,7 +186,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
+      className="top-(--header-height) h-[calc(101svh-var(--header-height))]!"
       {...props}
     >
       {/*<SidebarHeader>
@@ -206,7 +206,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <SignedIn>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <NavUser />
+            <NavUser/>
           </div>
         </SignedIn>
       </SidebarFooter>

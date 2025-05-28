@@ -38,9 +38,9 @@ export default function RootLayout({
               <SidebarProvider className="flex flex-col">
                 <SiteHeader />
                 <div className="flex flex-1">
-                  
+                  {/* <SignedIn> */}
                     <AppSidebar />
-                  
+                  {/* </SignedIn> */}
 
                   <SidebarInset>
                     <div className="flex flex-1 flex-col gap-4 p-4">
