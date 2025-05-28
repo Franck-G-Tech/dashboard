@@ -11,8 +11,8 @@ import { Resend } from "resend";
 // 1. Inicialización de Clientes Externos (Clerk)
 // ====================================================================
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
-const resend = new Resend(process.env.RESEND_API_KEY!);
-const emailResend= "School-App<noreply@franck.korian-labs.net>";
+const resend = new Resend(process.env.TRESEND_API_KEY!);
+const emailResend= "noreply@franck.korian-labs.net";
 // ====================================================================
 // 2. Actions (Funciones que modifican el estado de la DB o tienen efectos secundarios)
 // ====================================================================
