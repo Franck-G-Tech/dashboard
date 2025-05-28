@@ -6,7 +6,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import "@/app/globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
+//import { SignedIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "School-App",
