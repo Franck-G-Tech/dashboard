@@ -11,8 +11,7 @@ import { Resend } from "resend";
 // 1. Inicialización de Clientes Externos (Clerk)
 // ====================================================================
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
-//const resend = new Resend(process.env.RESEND_API_KEY);
-const resend = new Resend(process.env.RESEND_API_2_KEY!);
+const resend = new Resend(process.env.RESEND_API!);
 //const resend = new Resend("re_74k5dysT_EDi3zUNajjFcy3LRHfnw45nj");
 const emailResend = "School-App <noreply@franck.korian-labs.net>";
 
