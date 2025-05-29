@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "School-App",
   description: "WebApp para gestionar una school",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/pencils_120694.ico",
   },
 };
 
