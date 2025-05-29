@@ -12,7 +12,6 @@ import { Resend } from "resend";
 // ====================================================================
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 const resend = new Resend(process.env.RESEND_API!);
-//const resend = new Resend("re_74k5dysT_EDi3zUNajjFcy3LRHfnw45nj");
 const emailResend = "School-App <noreply@franck.korian-labs.net>";
 
 // ====================================================================
@@ -99,10 +98,111 @@ export const createUser = action({
         to: args.email,
         subject: "¡Bienvenido a School-App!",
         html: `
-        <h1>Bienvenido a nuestra plataforma</h1>
-        
-        <a href="https://dashboard-flax-xi.vercel.app">Empezar</a>
-        
+       <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Bienvenido/a a School-App!</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    color: #333333;
+    font-size: 28px;
+    margin: 0;
+  }
+  .content {
+    text-align: left; /* Alinea el texto del contenido a la izquierda */
+    margin-bottom: 20px;
+  }
+  .content p {
+    margin-bottom: 15px;
+  }
+  .button-wrapper {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .button {
+    display: inline-block;
+    background-color: #4CAF50; /* Un verde vibrante, puedes cambiarlo al color de tu marca */
+    color: #ffffff !important;
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  .button:hover {
+    background-color: #45a049; /* Un tono más oscuro al pasar el mouse */
+  }
+  .footer {
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+    font-size: 12px;
+    color: #777777;
+    text-align: center;
+  }
+  .footer a {
+    color: #007bff;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>¡Bienvenido/a a School-App!</h1>
+    </div>
+
+    <div class="content">
+      <p>Hola, <strong>${args.name}</strong>,</p>
+      <p>¡Nos emociona darte la bienvenida a <strong>School-App</strong>, la plataforma que simplificará tu experiencia educativa!</p>
+      <p>Aquí podrás:</p>
+      <ul>
+        <li>Acceder a la informacion al instante.</li>
+        <li>Maestros.</li>
+        <li>Estudiantes.</li>
+        <li>Calificaciones.</li>
+        <li>Y mucho más...</li>
+      </ul>
+      <p>Estamos aquí para ayudarte a sacar el máximo provecho de tu tiempo en la escuela. ¡Prepárate para una experiencia educativa más organizada y conectada!</p>
+    </div>
+ 
+    <div class="button-wrapper">
+      <a href="https://franck.korian-labs.net" class="button">¡Empezar ahora!</a>
+    </div>
+
+    <div class="footer">
+      <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:soporte@franck.korian-labs.net">contactar a nuestro equipo de soporte</a>.</p>
+      <p>&copy; 2025 School-App. Todos los derechos reservados.</p>
+      </div>
+  </div>
+</body>
+</html>
       `,
       });
 
