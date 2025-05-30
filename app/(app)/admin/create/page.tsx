@@ -15,14 +15,14 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 type SignUpFormData = {
   name: string;
   email: string;
-  // password: string;
+  password: string;
 };
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState<SignUpFormData>({
     name: "",
     email: "",
-    // password: "",
+    password: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,7 +112,7 @@ export default function SignUpPage() {
             required
           />
         </div>
-        {/* <div className="space-y-2">
+        <div className="space-y-2">
           <label htmlFor="password" className="block text-sm font-medium">
             Contraseña
           </label>
@@ -124,7 +124,7 @@ export default function SignUpPage() {
             onChange={handleChange}
             required
           />
-        </div> */}
+        </div>
         <div className="flex justify-end gap-2 pt-4">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Registrando..." : "Registrarse"}

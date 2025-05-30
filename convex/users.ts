@@ -32,6 +32,7 @@ export const createUser = action({
   args: {
     name: v.string(),
     email: v.string(),
+    password: v.string(),
   },
   
    //const resetUrl = "/https://dashboard-flax-xi.vercel.app";
@@ -43,10 +44,8 @@ export const createUser = action({
   handler: async (
     ctx,
     args
-  ): Promise<{ success: boolean; clerkId?: string; convexId?: Id<"users"> }> => {
-    let clerkUser = null; // Necesitamos esto para la compensación en caso de fallo
-    let invitationSent = false; // Bandera para saber si la invitación de Clerk fue enviada
-
+  ): Promise<{ clerkId: string; convexId: Id<"users"> }> => {
+    let clerkUser = null;
 
     try {
       // --- PASO 1: Validación de Unicidad (Pre-creación) ---
@@ -71,36 +70,13 @@ export const createUser = action({
         );
       }
 
-     // --- PASO 2: Crear una Invitación en Clerk (esto crea el usuario si no existe) ---
-      // La invitación le permitirá al usuario establecer su propia contraseña
-      const invitation = await clerk.invitations.createInvitation({
-        emailAddress: args.email,
-        publicMetadata: {
-          name: args.name,
-        },
-        redirectUrl: "https://franck.korian-labs.net", // Ejemplo
+      // --- PASO 2: Crear el usuario en Clerk ---
+      clerkUser = await clerk.users.createUser({
+        firstName: args.name.split(" ")[0],
+        lastName: args.name.split(" ").slice(1).join(" ") || "",
+        emailAddress: [args.email],
+        password: args.password,
       });
-      invitationSent = true;
-       console.log("Invitación de Clerk enviada:", invitation);
-     
-       let attempts = 0;
-      const maxAttempts = 5;
-      const delay = 1000; // 1 segundo
-
-      while (attempts < maxAttempts) {
-        const users = await clerk.users.getUserList({ emailAddress: [args.email] });
-        if (users.data.length > 0) {
-          clerkUser = users.data[0];
-          break;
-        }
-        await new Promise(resolve => setTimeout(resolve, delay));
-        attempts++;
-      }
-
-      if (!clerkUser) {
-        throw new Error("Fallo al encontrar el usuario recién creado en Clerk después de la invitación.");
-      }
-
 
       // --- PASO 3: Registrar el usuario en Convex (llama a la mutación interna) ---
       const convexUserId = await ctx.runMutation(
@@ -109,15 +85,14 @@ export const createUser = action({
           clerkId: clerkUser.id,
           name: args.name,
           email: args.email,
-          status: "active",
+          status: "active", // Valor literal que coincide con el v.union de tu esquema
           createdAt: Date.now(),
         }
       );
 
-       console.log(
+      console.log(
         `Usuario creado exitosamente. Clerk ID: ${clerkUser.id}, Convex ID: ${convexUserId}, email: ${args.email} `
       );
-
        await resend.emails.send({
         from: emailResend,
         to: args.email,
@@ -231,14 +206,9 @@ export const createUser = action({
       `,
       });
 
-      return {
-        success: true,
-        
-        clerkId: clerkUser.id,
-        convexId: convexUserId,
-      };
+      return { clerkId: clerkUser.id, convexId: convexUserId,  };
       
-    } catch (error) {
+    } catch (error: any) {
       // --- PASO 4: Manejo de Errores y Compensación ---
       console.error("Error en la acción createUser:", error);
 
@@ -252,7 +222,7 @@ export const createUser = action({
           console.log(
             `Usuario de Clerk (${clerkUser.id}) eliminado exitosamente como compensación.`
           );
-        } catch (clerkDeleteError) {
+        } catch (clerkDeleteError: any) {
           console.error(
             `¡FALLO CRÍTICO DE CONSISTENCIA! No se pudo eliminar el usuario de Clerk (${clerkUser.id}) después de un fallo en Convex.`,
             clerkDeleteError
@@ -262,7 +232,7 @@ export const createUser = action({
 
       // Re-lanzar el error como un Error estándar de JS
       if (typeof error === "object" && error !== null && "message" in error) {
-        throw new Error("Error");
+        throw new Error(error.message);
       } else {
         throw new Error(
           "Fallo al crear el usuario. Por favor, inténtalo de nuevo o contacta a soporte. Detalles: Error desconocido."
@@ -389,11 +359,12 @@ export const updateUserInClerkAndConvex = action({
           }
         }
       }
-    } catch (clerkError) {
+    } catch (clerkError: any) {
       console.error("Error al actualizar el email en Clerk:", clerkError);
       throw new Error(
         `Fallo al actualizar el email en Clerk: ${
-          
+          clerkError.errors?.[0]?.message ||
+          clerkError.message ||
           String(clerkError)
         }`
       );
@@ -450,13 +421,15 @@ export const deleteUser = action({
           `[ACTION] Usuario de Clerk ${userToDelete.clerkId} eliminado exitosamente.`
         );
         
-      } catch (clerkError) {
+      } catch (clerkError: any) {
         console.error(
           `[ACTION ERROR] Fallo al eliminar usuario de Clerk ${userToDelete.clerkId}:`,
           clerkError
         );
         throw new Error(
           `Fallo al eliminar usuario de Clerk: ${
+            clerkError.errors?.[0]?.message ||
+            clerkError.message ||
             String(clerkError)
           }`
         );
